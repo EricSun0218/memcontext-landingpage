@@ -1226,7 +1226,7 @@ const Home: React.FC = () => {
     }
   };
 
-  // 处理Join Waitlist按钮点击
+  // 处理Get Started按钮点击
   const handleJoinWaitlist = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -1388,7 +1388,7 @@ const Home: React.FC = () => {
                   type="submit"
                   className="px-6 py-3 bg-primary text-white font-bold rounded-full hover:bg-primaryHover transition-all active:scale-95 whitespace-nowrap mr-1"
                 >
-                  Join Waitlist
+                  Get Started
                 </button>
               </div>
               {emailError && (

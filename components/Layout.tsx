@@ -79,12 +79,12 @@ const Layout: React.FC<LayoutProps> = ({ children, toggleTheme, isDark }) => {
             </div>
 
             <div className="flex items-center gap-4">
-              {/* Join Waitlist 按钮 - 添加到这里！ */}
+              {/* Get Started 按钮 - 添加到这里！ */}
               <Link
                 to="/join"
                 className="btn-primary text-sm"
               >
-                Join Waitlist
+                Get Started
               </Link>
               
               <button
@@ -128,13 +128,13 @@ const Layout: React.FC<LayoutProps> = ({ children, toggleTheme, isDark }) => {
                   {link.name}
                 </Link>
               ))}
-              {/* 移动端 Join Waitlist 按钮 */}
+              {/* 移动端 Get Started 按钮 */}
               <Link
                 to="/join"
                 className="w-full py-3 flex items-center justify-center gap-2 bg-primary text-white font-bold rounded-lg hover:bg-primaryHover transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Join Waitlist
+                Get Started
               </Link>
               <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
                 <a 
