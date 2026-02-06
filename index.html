@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MemContext - Infinite Memory for AI Agents</title>
+    <link rel="icon" type="image/png" href="/logo/logo.png" />
+    <link rel="apple-touch-icon" href="/logo/logo.png" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+      :root {
+        /* Light Theme (Dashboard + fallback) */
+        --bg-background: #f8fafc;
+        --bg-sidebar: #f1f5f9;
+        --bg-card: #ffffff;
+        --bg-input: #ffffff;
+        --bg-hover: #e2e8f0;
+        --border-color: rgba(15, 23, 42, 0.12);
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+      }
+
+      .dark {
+        /* Dark Theme (Marketing + Dashboard) */
+        --bg-background: #000000;
+        --bg-sidebar: #0d151f;
+        --bg-card: #12161b;
+        --bg-input: #0f141c;
+        --bg-hover: #182030;
+        --border-color: rgba(255, 255, 255, 0.08);
+        --text-main: #ffffff;
+        --text-muted: #94a3b8;
+      }
+
+      body {
+        font-family: 'Manrope', sans-serif;
+        background-color: var(--bg-background);
+        color: var(--text-main);
+        transition: background-color 0.3s, color 0.3s;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Space Grotesk', sans-serif;
+      }
+      
+      /* Dashboard components use Inter font */
+      .dashboard-app, .dashboard-app * {
+        font-family: 'Inter', sans-serif;
+      }
+      
+      /* Custom scrollbar for dark theme */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-color); 
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted); 
+      }
+      
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+    </style>
+    
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              // Brand system
+              primary: "#178db5",
+              primaryHover: "#0f6f8d",
+              secondary: "#66CC33",
+              accent: "#22d3ee",
+              violet: "#a855f7",
+
+              // Marketing backgrounds
+              background: {
+                DEFAULT: 'var(--bg-background)',
+                dark: "#000000",
+                darker: "#000000",
+                light: "#fafafa"
+              },
+              surface: {
+                dark: "#12161b",
+                light: "#ffffff"
+              },
+
+              // Dashboard tokens (CSS variables)
+              sidebar: 'var(--bg-sidebar)',
+              card: 'var(--bg-card)',
+              input: 'var(--bg-input)',
+              surfaceHighlight: 'var(--bg-hover)',
+              border: 'var(--border-color)',
+              textMain: 'var(--text-main)',
+              textMuted: 'var(--text-muted)',
+
+              // Marketing text
+              ink: {
+                1: "#ffffff",
+                2: "#94a3b8",
+                3: "#64748b"
+              },
+              stroke: "rgba(255,255,255,0.08)"
+            },
+            fontFamily: {
+              display: ['Space Grotesk', 'sans-serif'],
+              body: ['Manrope', 'sans-serif'],
+              mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", "monospace"],
+              inter: ['Inter', 'sans-serif'] // For dashboard components
+            },
+            backgroundImage: {
+              'grid-pattern': "linear-gradient(to right, #334155 1px, transparent 1px), linear-gradient(to bottom, #334155 1px, transparent 1px)",
+              'grid-pattern-light': "linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px)",
+            },
+            boxShadow: {
+              card: '0 30px 80px rgba(0,0,0,0.5)',
+              glow: '0 0 40px rgba(23, 141, 181, 0.35)'
+            },
+            keyframes: {
+              twinkle: {
+                '0%, 100%': { transform: 'scale(1)', opacity: '0.5', filter: 'grayscale(1) brightness(0.8)' },
+                '3%': { transform: 'scale(1.35)', opacity: '1', filter: 'grayscale(0) brightness(1.3) drop-shadow(0 0 25px rgba(255,255,255,0.4))' },
+                '13%': { transform: 'scale(1.35)', opacity: '1', filter: 'grayscale(0) brightness(1.3) drop-shadow(0 0 25px rgba(255,255,255,0.4))' },
+                '16%': { transform: 'scale(1)', opacity: '0.5', filter: 'grayscale(1) brightness(0.8)' },
+              },
+              'twinkle-opacity': {
+                '0%, 100%': { opacity: '0' },
+                '3%': { opacity: '1' },
+                '13%': { opacity: '1' },
+                '16%': { opacity: '0' },
+              },
+              'arrow-grow-up': {
+                '0%': { transform: 'scale(0.3) rotate(15deg)', opacity: '0', strokeDashoffset: '60' },
+                '20%': { opacity: '1' },
+                '80%': { transform: 'scale(1.1) rotate(-5deg)', strokeDashoffset: '0' },
+                '100%': { transform: 'scale(1) rotate(0deg)', opacity: '1', strokeDashoffset: '0' }
+              },
+              'arrow-grow-down': {
+                '0%': { transform: 'scale(0.3) rotate(-15deg) scaleY(-1)', opacity: '0', strokeDashoffset: '60' },
+                '20%': { opacity: '1' },
+                '80%': { transform: 'scale(1.1) rotate(5deg) scaleY(-1)', strokeDashoffset: '0' },
+                '100%': { transform: 'scale(1) rotate(0deg) scaleY(-1)', opacity: '1', strokeDashoffset: '0' }
+              }
+            },
+            animation: {
+              twinkle: 'twinkle 12s ease-in-out infinite',
+              'twinkle-opacity': 'twinkle-opacity 12s ease-in-out infinite',
+              'spin-slow': 'spin 4s linear infinite',
+              'arrow-up': 'arrow-grow-up 2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite',
+              'arrow-down': 'arrow-grow-down 2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite',
+            }
+          }
+        }
+      }
+    </script>
+    
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react-dom": "https://esm.sh/react-dom@^19.2.3",
+    "react-dom/client": "https://esm.sh/react-dom@^19.2.3/client",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.12.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react-icons/si": "https://esm.sh/react-icons@5.4.0/si?external=react",
+    "react-icons/vsc": "https://esm.sh/react-icons@5.4.0/vsc?external=react",
+    "react-icons/": "https://esm.sh/react-icons@^5.5.0/",
+    "recharts": "https://esm.sh/recharts@2.12.0?external=react,react-dom",
+    "@radix-ui/react-tabs": "https://esm.sh/@radix-ui/react-tabs@1.0.4?external=react,react-dom",
+    "@radix-ui/react-dropdown-menu": "https://esm.sh/@radix-ui/react-dropdown-menu@2.0.6?external=react,react-dom",
+    "@radix-ui/react-progress": "https://esm.sh/@radix-ui/react-progress@1.0.3?external=react,react-dom"
+  }
+}
+</script>
+    <link rel="stylesheet" href="/index.css">
+  </head>
+  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-ink-1 transition-colors duration-200">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

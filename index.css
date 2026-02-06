@@ -1,0 +1,76 @@
+:root {
+  --container-pad: 24px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --container-pad: 32px;
+  }
+}
+
+.site-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+}
+
+.section-pad {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+
+.section-pad-sm {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  background: #178db5;
+  color: #ffffff;
+  font-weight: 800;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 20px 40px rgba(23, 141, 181, 0.25);
+}
+
+.btn-primary:hover {
+  background: #0f6f8d;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+
+.card-base {
+  background: #12161b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
