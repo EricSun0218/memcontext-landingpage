@@ -50,6 +50,61 @@ import { Link, useNavigate } from 'react-router-dom'; // 添加useNavigate导入
 import { SiNotion, SiYoutube, SiGithub, SiAnthropic, SiCoze, SiN8N } from 'react-icons/si';
 import { VscVscode } from 'react-icons/vsc';
 
+// 滚动动画Hook
+const useScrollAnimation = (threshold: number = 0.1) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // 一旦可见就不再观察，避免重复触发
+          if (ref.current) {
+            observer.unobserve(ref.current);
+          }
+        }
+      },
+      { threshold }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [threshold]);
+
+  return { ref, isVisible };
+};
+
+// 滚动动画包装组件
+const ScrollAnimatedSection: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  threshold?: number;
+}> = ({ children, className = '', delay = 0, threshold = 0.1 }) => {
+  const { ref, isVisible } = useScrollAnimation(threshold);
+
+  return (
+    <div
+      ref={ref}
+      className={`scroll-fade-in ${isVisible ? 'visible' : ''} ${className}`}
+      style={{
+        transitionDelay: delay > 0 ? `${delay}s` : undefined
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
 const FloatingLogo: React.FC<{ 
   icon: any, 
   top: string, 
@@ -399,20 +454,22 @@ const CompatibilityCard: React.FC<CompCardProps> = ({ icon, title, subtitle, sec
 
 const EnterpriseScaleHeadlineSection = () => {
   return (
-    <section className="relative w-full section-pad-sm bg-transparent">
-      <div className="site-container text-center">
-        <div className="flex justify-center mb-6">
-          <div className="px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl">
-            <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Capabilities</span>
+    <ScrollAnimatedSection>
+      <section className="relative w-full section-pad-sm bg-transparent">
+        <div className="site-container text-center">
+          <div className="flex justify-center mb-6">
+            <div className="px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl">
+              <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Capabilities</span>
+            </div>
           </div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.05]">
+            <span className="text-ink-1">Reinventing</span> <span className="text-primary">Agent Memory</span>
+            <br />
+            <span className="text-ink-1">for Enterprise Scale</span>
+          </h2>
         </div>
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.05]">
-          <span className="text-ink-1">Reinventing</span> <span className="text-primary">Agent Memory</span>
-          <br />
-          <span className="text-ink-1">for Enterprise Scale</span>
-        </h2>
-      </div>
-    </section>
+      </section>
+    </ScrollAnimatedSection>
   );
 };
 
@@ -462,31 +519,35 @@ const PlatformCompatibilitySection = () => {
   ];
 
   return (
-    <section className="relative w-full section-pad bg-transparent overflow-hidden">
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(23,141,181,0.08)_0%,_transparent_60%)]"></div>
-      </div>
+    <ScrollAnimatedSection>
+      <section className="relative w-full section-pad bg-transparent overflow-hidden">
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(23,141,181,0.08)_0%,_transparent_60%)]"></div>
+        </div>
 
-      <div className="site-container relative z-10">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-ink-2 text-xs font-black uppercase tracking-[0.2em] mb-6">
-            Compatibility
+        <div className="site-container relative z-10">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-ink-2 text-xs font-black uppercase tracking-[0.2em] mb-6">
+              Compatibility
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.05] text-ink-1">
+              Memory that plugs into your stack
+            </h2>
+            <p className="text-lg md:text-xl text-ink-2 max-w-2xl mx-auto mt-4 leading-relaxed">
+              Built for modern agent ecosystems — connect once, then scale across workflows, tools, and sessions.
+            </p>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.05] text-ink-1">
-            Memory that plugs into your stack
-          </h2>
-          <p className="text-lg md:text-xl text-ink-2 max-w-2xl mx-auto mt-4 leading-relaxed">
-            Built for modern agent ecosystems — connect once, then scale across workflows, tools, and sessions.
-          </p>
-        </div>
 
-        <div className="flex flex-col gap-10 items-center">
-          {compatibilityData.map((data, idx) => (
-            <CompatibilityCard key={idx} {...data} />
-          ))}
+          <div className="flex flex-col gap-10 items-center">
+            {compatibilityData.map((data, idx) => (
+              <ScrollAnimatedSection key={idx} delay={idx * 0.1}>
+                <CompatibilityCard {...data} />
+              </ScrollAnimatedSection>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </ScrollAnimatedSection>
   );
 };
 
@@ -529,39 +590,47 @@ const AdvantageCard: React.FC<{
 
 const AdvantagesSection = () => {
   return (
-    <section className="relative w-full section-pad bg-transparent overflow-hidden">
-      <div className="site-container relative z-10">
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl mb-6">
-            <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Core Strengths</span>
+    <ScrollAnimatedSection>
+      <section className="relative w-full section-pad bg-transparent overflow-hidden">
+        <div className="site-container relative z-10">
+          <div className="flex flex-col items-center text-center mb-16">
+            <div className="px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl mb-6">
+              <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Core Strengths</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-ink-1 font-display tracking-tight leading-tight max-w-4xl">
+              Why Teams Choose Our <br /><span className="text-primary">Cognitive Layer</span>
+            </h2>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-ink-1 font-display tracking-tight leading-tight max-w-4xl">
-            Why Teams Choose Our <br /><span className="text-primary">Cognitive Layer</span>
-          </h2>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <AdvantageCard 
-            icon={<MonitorPlay size={48} strokeWidth={1.5} />}
-            title={"Multimodal\nMemory Engine"}
-            desc="Real-time API ingestion of text, images, and videos—automatically extracts entities and relationships to build high-fidelity, traceable long-term memory for agents."
-            imageUrl="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop"
-          />
-          <AdvantageCard 
-            icon={<Network size={48} strokeWidth={1.5} />}
-            title={"Context-Aware\nReasoning Capability"}
-            desc="Built on a Context Graph, it accumulates memory, evolves preferences, and models behavior—staying consistent, understanding history, and forming a unique personality."
-            imageUrl="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop"
-          />
-          <AdvantageCard 
-            icon={<Atom size={48} strokeWidth={1.5} />}
-            title={"Multi-Agent\nPlatform Integration"}
-            desc="Lightweight, standard API—deeply compatible with n8n, Coze, and more. Add memory to your agent without changing your existing architecture."
-            imageUrl="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
-          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <ScrollAnimatedSection delay={0.1}>
+              <AdvantageCard 
+                icon={<MonitorPlay size={48} strokeWidth={1.5} />}
+                title={"Multimodal\nMemory Engine"}
+                desc="Real-time API ingestion of text, images, and videos—automatically extracts entities and relationships to build high-fidelity, traceable long-term memory for agents."
+                imageUrl="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop"
+              />
+            </ScrollAnimatedSection>
+            <ScrollAnimatedSection delay={0.2}>
+              <AdvantageCard 
+                icon={<Network size={48} strokeWidth={1.5} />}
+                title={"Context-Aware\nReasoning Capability"}
+                desc="Built on a Context Graph, it accumulates memory, evolves preferences, and models behavior—staying consistent, understanding history, and forming a unique personality."
+                imageUrl="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop"
+              />
+            </ScrollAnimatedSection>
+            <ScrollAnimatedSection delay={0.3}>
+              <AdvantageCard 
+                icon={<Atom size={48} strokeWidth={1.5} />}
+                title={"Multi-Agent\nPlatform Integration"}
+                desc="Lightweight, standard API—deeply compatible with n8n, Coze, and more. Add memory to your agent without changing your existing architecture."
+                imageUrl="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+              />
+            </ScrollAnimatedSection>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </ScrollAnimatedSection>
   );
 };
 
@@ -713,17 +782,18 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <section className="relative w-full bg-transparent overflow-visible section-pad">
-      <div className="site-container mb-16 flex flex-col items-center text-center">
-        <div className="inline-flex px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl mb-6">
-          <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Features</span>
+    <ScrollAnimatedSection>
+      <section className="relative w-full bg-transparent overflow-visible section-pad">
+        <div className="site-container mb-16 flex flex-col items-center text-center">
+          <div className="inline-flex px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl mb-6">
+            <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Features</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-ink-1 font-display tracking-tight leading-[1.02] max-w-4xl">
+            The memory layer <br />for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-300">agentic AI</span>
+          </h2>
         </div>
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-ink-1 font-display tracking-tight leading-[1.02] max-w-4xl">
-          The memory layer <br />for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-300">agentic AI</span>
-        </h2>
-      </div>
 
-      <div className="site-container flex flex-col lg:flex-row items-start gap-16 lg:gap-28">
+        <div className="site-container flex flex-col lg:flex-row items-start gap-16 lg:gap-28">
         <div
           ref={leftColumnRef}
           className="flex-1 space-y-0 w-full lg:max-w-3xl"
@@ -794,7 +864,8 @@ const FeaturesSection = () => {
           </div>
         </div>
       </div>
-    </section>
+      </section>
+    </ScrollAnimatedSection>
   );
 };
 
@@ -837,19 +908,20 @@ const ExamplesSection = () => {
   ];
 
   return (
-    <section className="relative w-full bg-transparent section-pad overflow-visible">
-      <div className="site-container">
-        <div className="flex justify-center w-full mb-6">
-          <div className="px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl">
-            <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Examples</span>
+    <ScrollAnimatedSection>
+      <section className="relative w-full bg-transparent section-pad overflow-visible">
+        <div className="site-container">
+          <div className="flex justify-center w-full mb-6">
+            <div className="px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl">
+              <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Examples</span>
+            </div>
           </div>
-        </div>
-        <h2 className="text-center text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.05] text-ink-1 mb-12">
-          <span className="text-ink-1">Breaking</span>{" "}
-          <span className="text-primary">Time Limits</span>
-          <br />
-          <span className="text-ink-1">Intelligence</span>
-        </h2>
+          <h2 className="text-center text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.05] text-ink-1 mb-12">
+            <span className="text-ink-1">Breaking</span>{" "}
+            <span className="text-primary">Time Limits</span>
+            <br />
+            <span className="text-ink-1">Intelligence</span>
+          </h2>
         <div className="mt-8">
           <div className="flex flex-col lg:flex-row gap-20 items-start">
           <div className="lg:w-1/2 w-full h-[650px] lg:sticky lg:top-32 flex flex-col lg:-ml-16">
@@ -923,8 +995,9 @@ const ExamplesSection = () => {
           </div>
           </div>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </ScrollAnimatedSection>
   );
 };
 
@@ -939,7 +1012,8 @@ const MetricsSection = () => {
   ];
 
   return (
-    <section className="relative w-full section-pad bg-transparent overflow-hidden">
+    <ScrollAnimatedSection>
+      <section className="relative w-full section-pad bg-transparent overflow-hidden">
       <div
         className="absolute left-1/2 -translate-x-1/2 -top-[40%] w-[1200px] h-[800px] opacity-40 pointer-events-none"
         style={{ background: 'radial-gradient(circle at center, rgba(23,141,181,0.28) 0%, rgba(0,0,0,0) 70%)' }}
@@ -1004,17 +1078,21 @@ const MetricsSection = () => {
         <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent mb-10"></div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {metrics.map((metric, idx) => (
-            <MetricCard key={idx} {...metric} />
+            <ScrollAnimatedSection key={idx} delay={idx * 0.1}>
+              <MetricCard {...metric} />
+            </ScrollAnimatedSection>
           ))}
         </div>
       </div>
-    </section>
+      </section>
+    </ScrollAnimatedSection>
   );
 };
 
 const QuickstartSection = () => {
   return (
-    <section className="relative w-full section-pad bg-transparent overflow-hidden">
+    <ScrollAnimatedSection>
+      <section className="relative w-full section-pad bg-transparent overflow-hidden">
       <div className="site-container relative z-10">
         <div className="w-fit px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl mb-10">
           <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Quickstart</span>
@@ -1075,13 +1153,15 @@ const QuickstartSection = () => {
           </div>
         </div>
       </div>
-    </section>
+      </section>
+    </ScrollAnimatedSection>
   );
 };
 
 const FinalCTASection = () => {
   return (
-    <section className="relative w-full section-pad bg-transparent overflow-hidden flex justify-center">
+    <ScrollAnimatedSection>
+      <section className="relative w-full section-pad bg-transparent overflow-hidden flex justify-center">
       <div className="site-container flex justify-center">
         <div className="relative w-full max-w-4xl bg-surface-dark rounded-[3rem] border border-white/10 p-12 md:p-20 flex flex-col items-center text-center overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.8)]">
         {/* Soft background glow */}
@@ -1124,7 +1204,8 @@ const FinalCTASection = () => {
         ></div>
       </div>
       </div>
-    </section>
+      </section>
+    </ScrollAnimatedSection>
   );
 };
 
@@ -1201,28 +1282,33 @@ const Home: React.FC = () => {
             <FloatingLogo icon={CursorLogo} top="62%" right="8%" delay="-2s" color="#ffffff" rotate={-15} size={40} />
         </div>
         <div className="relative z-10 w-full site-container flex flex-col items-center -mt-4 md:-mt-8 gap-12">
-          <h1 className="flex flex-col items-center justify-center font-display font-black tracking-tight leading-[1.1] w-full text-center">
-            <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-ink-1 drop-shadow-2xl pb-3 md:pb-5 whitespace-nowrap">
-              Memory-Centric Context <span className="text-ink-1">For</span>
-            </span>
-            <div className="flex flex-nowrap items-center justify-center mt-6 text-center">
-              <div className="relative inline-block text-center w-[2ch] sm:w-[3.5ch] md:w-[4ch] lg:w-[4.5ch] min-w-[140px] sm:min-w-[220px] md:min-w-[300px] lg:min-w-[380px]">
-                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <span 
-                    className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-cyan-300 inline-block py-2 leading-tight transition-all duration-500 transform drop-shadow-[0_0_60px_rgba(34,211,238,0.7)] ${
-                      isFading ? 'opacity-0 -translate-x-8 scale-95 blur-md' : 'opacity-100 translate-x-0 scale-100 blur-0'
-                    }`}
-                  >
-                    {words[wordIndex]}
+          <ScrollAnimatedSection threshold={0.2}>
+            <h1 className="flex flex-col items-center justify-center font-display font-black tracking-tight leading-[1.1] w-full text-center">
+              <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-ink-1 drop-shadow-2xl pb-3 md:pb-5 whitespace-nowrap">
+                Memory-Centric Context <span className="text-ink-1">For</span>
+              </span>
+              <div className="flex flex-nowrap items-center justify-center mt-6 text-center">
+                <div className="relative inline-block text-center w-[2ch] sm:w-[3.5ch] md:w-[4ch] lg:w-[4.5ch] min-w-[140px] sm:min-w-[220px] md:min-w-[300px] lg:min-w-[380px]">
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <span 
+                      className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-cyan-300 inline-block py-2 leading-tight transition-all duration-500 transform drop-shadow-[0_0_60px_rgba(34,211,238,0.7)] ${
+                        isFading ? 'opacity-0 -translate-x-8 scale-95 blur-md' : 'opacity-100 translate-x-0 scale-100 blur-0'
+                      }`}
+                    >
+                      {words[wordIndex]}
+                    </span>
                   </span>
-                </span>
+                </div>
               </div>
-            </div>
-          </h1>
-          <p className="text-lg md:text-xl text-ink-2 text-center max-w-2xl leading-relaxed">
-            Give agents persistent, multimodal memory across sessions — built for precision retrieval, real-time updates, and scale.
-          </p>
-          <div className="relative w-full max-w-lg">
+            </h1>
+          </ScrollAnimatedSection>
+          <ScrollAnimatedSection delay={0.1} threshold={0.2}>
+            <p className="text-lg md:text-xl text-ink-2 text-center max-w-2xl leading-relaxed">
+              Give agents persistent, multimodal memory across sessions — built for precision retrieval, real-time updates, and scale.
+            </p>
+          </ScrollAnimatedSection>
+          <ScrollAnimatedSection delay={0.2} threshold={0.2}>
+            <div className="relative w-full max-w-lg">
             <svg
               className="pointer-events-none absolute -inset-[6px] w-[calc(100%+12px)] h-[calc(100%+12px)] overflow-visible"
               viewBox="0 0 1000 120"
@@ -1311,10 +1397,13 @@ const Home: React.FC = () => {
                 </div>
               )}
             </form>
-          </div>
-          <p className="text-ink-3 text-sm mt-4 text-center font-medium">
-            Join 2,000+ developers building the future of AI.
-          </p>
+            </div>
+          </ScrollAnimatedSection>
+          <ScrollAnimatedSection delay={0.3} threshold={0.2}>
+            <p className="text-ink-3 text-sm mt-4 text-center font-medium">
+              Join 2,000+ developers building the future of AI.
+            </p>
+          </ScrollAnimatedSection>
         </div>
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-primary/20 blur-[100px] pointer-events-none"></div>
       </section>
