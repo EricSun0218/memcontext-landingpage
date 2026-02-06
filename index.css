@@ -1,5 +1,11 @@
 :root {
-  --container-pad: 24px;
+  --container-pad: 16px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --container-pad: 24px;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -13,29 +19,67 @@
   margin: 0 auto;
   padding-left: var(--container-pad);
   padding-right: var(--container-pad);
+  width: 100%;
 }
 
 .section-pad {
-  padding-top: 96px;
-  padding-bottom: 96px;
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+@media (min-width: 640px) {
+  .section-pad {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-pad {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
 }
 
 .section-pad-sm {
-  padding-top: 72px;
-  padding-bottom: 72px;
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+@media (min-width: 640px) {
+  .section-pad-sm {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-pad-sm {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
 }
 
 .btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1.75rem;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   background: #178db5;
   color: #ffffff;
   font-weight: 800;
+  font-size: 0.875rem;
   transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 20px 40px rgba(23, 141, 181, 0.25);
+}
+
+@media (min-width: 640px) {
+  .btn-primary {
+    gap: 0.75rem;
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+  }
 }
 
 .btn-primary:hover {
@@ -49,14 +93,23 @@
 .btn-secondary {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1.5rem;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #ffffff;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(8px);
+  font-size: 0.875rem;
   transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .btn-secondary {
+    gap: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
 }
 
 .btn-secondary:hover {

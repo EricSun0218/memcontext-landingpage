@@ -908,93 +908,101 @@ const ExamplesSection = () => {
   ];
 
   return (
-    <ScrollAnimatedSection>
+    <ScrollAnimatedSection threshold={0.2}>
       <section className="relative w-full bg-transparent section-pad overflow-visible">
         <div className="site-container">
-          <div className="flex justify-center w-full mb-6">
-            <div className="px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl">
-              <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Examples</span>
-            </div>
-          </div>
-          <h2 className="text-center text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.05] text-ink-1 mb-12">
-            <span className="text-ink-1">Breaking</span>{" "}
-            <span className="text-primary">Time Limits</span>
-            <br />
-            <span className="text-ink-1">Intelligence</span>
-          </h2>
-        <div className="mt-8">
-          <div className="flex flex-col lg:flex-row gap-20 items-start">
-          <div className="lg:w-1/2 w-full h-[650px] lg:sticky lg:top-32 flex flex-col lg:-ml-16">
-            <div className="relative flex-1 rounded-[3.25rem] bg-surface-dark border border-white/10 overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.9)] transition-all duration-700 group/card">
-              <div 
-                className="absolute inset-0 z-0 transition-all duration-1000 opacity-20 filter grayscale blur-[2px] group-hover/card:opacity-30 group-hover/card:blur-0 scale-105"
-                style={{ 
-                  backgroundImage: `url(${examplesData[activeIndex].bgImage})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              />
-              <div 
-                className="absolute inset-0 z-1 opacity-60 transition-all duration-1000 scale-[1.5]" 
-                style={{ background: examplesData[activeIndex].visual }}
-              ></div>
-              <div className="absolute inset-0 z-2 bg-gradient-to-t from-[#0d151f] via-[#0d151f]/40 to-transparent"></div>
-              <div className="relative z-10 p-12 h-full flex flex-col">
-                <div className="mb-12">
-                   <div className="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md">
-                      <Quote size={40} className="text-ink-1 opacity-80" />
-                   </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-ink-1 font-display mb-10 leading-[1.1] tracking-tight transition-all duration-500 transform">
-                    {examplesData[activeIndex].leftTitle}
-                  </h3>
-                  <p className="text-xl md:text-2xl text-ink-2 font-body leading-relaxed mb-16 max-w-xl transition-all duration-500">
-                    {examplesData[activeIndex].leftDesc}
-                  </p>
-                </div>
+          <ScrollAnimatedSection threshold={0.25}>
+            <div className="flex justify-center w-full mb-6">
+              <div className="px-6 py-2 rounded-full bg-white/5 border border-white/10 shadow-xl">
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-ink-1">Examples</span>
               </div>
-              <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/[0.03] to-transparent"></div>
             </div>
-          </div>
-          <div className="lg:w-1/2 w-full flex flex-col lg:h-[650px] lg:sticky lg:top-32 lg:ml-10">
-            <div className="flex flex-col gap-4">
-              {examplesData.map((example, idx) => (
-                <button
-                  key={idx}
-                  onMouseEnter={() => setActiveIndex(idx)}
-                  className={`relative px-6 py-6 rounded-[2rem] border text-left transition-all duration-500 group overflow-hidden ${
-                    activeIndex === idx 
-                      ? 'bg-white/10 border-primary shadow-[0_0_30px_rgba(23,141,181,0.2)] scale-[1.02]' 
-                      : 'bg-white/5 border-white/10 hover:border-white/20'
-                  }`}
-                >
-                  <div className={`absolute top-0 left-0 h-full w-1 transition-all duration-500 ${activeIndex === idx ? 'bg-primary' : 'bg-transparent'}`}></div>
-                  <div className="flex items-center justify-between">
-                    <h4 className={`text-xl md:text-2xl font-black font-display tracking-tight transition-all duration-500 ${activeIndex === idx ? 'text-ink-1' : 'text-ink-3'}`}>
-                      {example.buttonTitle}
-                    </h4>
-                    {activeIndex === idx && <ChevronRight size={24} className="text-primary animate-pulse" />}
-                  </div>
-                </button>
-              ))}
-            </div>
-            <div className="h-px w-full bg-gradient-to-r from-white/5 via-white/10 to-white/5 my-auto"></div>
-            <div className="flex flex-col gap-4 -mt-2 animate-in fade-in slide-in-from-bottom-4 duration-700">
-              {examplesData[activeIndex].features.map((feat, i) => (
-                <div key={i} className="flex items-center gap-6 group/feat">
-                  <div className="w-12 h-12 rounded-xl bg-[#0a141a] border border-primary/40 flex items-center justify-center text-primary transition-all duration-300 shadow-[inset_0_0_15px_rgba(23,141,181,0.2)] group-hover/feat:border-primary group-hover/feat:shadow-primary/20">
-                    <div className="w-6 h-6 rounded-full border border-primary/60 flex items-center justify-center">
-                      <CheckCircle2 size={14} className="fill-primary/10" />
+            <h2 className="text-center text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.05] text-ink-1 mb-12">
+              <span className="text-ink-1">Breaking</span>{" "}
+              <span className="text-primary">Time Limits</span>
+              <br />
+              <span className="text-ink-1">Intelligence</span>
+            </h2>
+          </ScrollAnimatedSection>
+          <div className="mt-8">
+            <div className="flex flex-col lg:flex-row gap-20 items-start">
+              <ScrollAnimatedSection delay={0.05} threshold={0.3} className="lg:w-1/2 w-full h-[650px] lg:sticky lg:top-32 flex flex-col">
+                <div className="relative flex-1 rounded-[3.25rem] bg-surface-dark border border-white/10 overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.9)] transition-all duration-700 group/card">
+                  <div 
+                    className="absolute inset-0 z-0 transition-all duration-1000 opacity-20 filter grayscale blur-[2px] group-hover/card:opacity-30 group-hover/card:blur-0 scale-105"
+                    style={{ 
+                      backgroundImage: `url(${examplesData[activeIndex].bgImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
+                  />
+                  <div 
+                    className="absolute inset-0 z-1 opacity-60 transition-all duration-1000 scale-[1.5]" 
+                    style={{ background: examplesData[activeIndex].visual }}
+                  ></div>
+                  <div className="absolute inset-0 z-2 bg-gradient-to-t from-[#0d151f] via-[#0d151f]/40 to-transparent"></div>
+                  <div className="relative z-10 p-8 md:p-12 h-full flex flex-col">
+                    <div className="mb-8 md:mb-12">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md">
+                        <Quote size={36} className="md:w-10 md:h-10 text-ink-1 opacity-80" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-ink-1 font-display mb-6 md:mb-10 leading-[1.1] tracking-tight transition-all duration-500 transform">
+                        {examplesData[activeIndex].leftTitle}
+                      </h3>
+                      <p className="text-lg md:text-xl text-ink-2 font-body leading-relaxed mb-10 md:mb-16 max-w-xl transition-all duration-500">
+                        {examplesData[activeIndex].leftDesc}
+                      </p>
                     </div>
                   </div>
-                  <span className="text-ink-1 font-bold text-xl tracking-tight transition-all duration-300 group-hover/feat:translate-x-1">{feat}</span>
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/[0.03] to-transparent"></div>
                 </div>
-              ))}
+              </ScrollAnimatedSection>
+
+              <ScrollAnimatedSection delay={0.15} threshold={0.3} className="lg:w-1/2 w-full flex flex-col lg:h-[650px] lg:sticky lg:top-32">
+                <div className="flex flex-col gap-4">
+                  {examplesData.map((example, idx) => (
+                    <ScrollAnimatedSection key={idx} delay={0.1 + idx * 0.05} threshold={0.35}>
+                      <button
+                        onMouseEnter={() => setActiveIndex(idx)}
+                        className={`relative px-6 py-6 rounded-[2rem] border text-left transition-all duration-500 group overflow-hidden ${
+                          activeIndex === idx 
+                            ? 'bg-white/10 border-primary shadow-[0_0_30px_rgba(23,141,181,0.2)] scale-[1.02]' 
+                            : 'bg-white/5 border-white/10 hover:border-white/20'
+                        }`}
+                      >
+                        <div className={`absolute top-0 left-0 h-full w-1 transition-all duration-500 ${activeIndex === idx ? 'bg-primary' : 'bg-transparent'}`}></div>
+                        <div className="flex items-center justify-between">
+                          <h4 className={`text-xl md:text-2xl font-black font-display tracking-tight transition-all duration-500 ${activeIndex === idx ? 'text-ink-1' : 'text-ink-3'}`}>
+                            {example.buttonTitle}
+                          </h4>
+                          {activeIndex === idx && <ChevronRight size={24} className="text-primary animate-pulse" />}
+                        </div>
+                      </button>
+                    </ScrollAnimatedSection>
+                  ))}
+                </div>
+                <ScrollAnimatedSection delay={0.25} threshold={0.35}>
+                  <div className="h-px w-full bg-gradient-to-r from-white/5 via-white/10 to-white/5 my-auto"></div>
+                </ScrollAnimatedSection>
+                <ScrollAnimatedSection delay={0.3} threshold={0.35}>
+                  <div className="flex flex-col gap-4 -mt-2">
+                    {examplesData[activeIndex].features.map((feat, i) => (
+                      <div key={i} className="flex items-center gap-6 group/feat">
+                        <div className="w-12 h-12 rounded-xl bg-[#0a141a] border border-primary/40 flex items-center justify-center text-primary transition-all duration-300 shadow-[inset_0_0_15px_rgba(23,141,181,0.2)] group-hover/feat:border-primary group-hover/feat:shadow-primary/20">
+                          <div className="w-6 h-6 rounded-full border border-primary/60 flex items-center justify-center">
+                            <CheckCircle2 size={14} className="fill-primary/10" />
+                          </div>
+                        </div>
+                        <span className="text-ink-1 font-bold text-xl tracking-tight transition-all duration-300 group-hover/feat:translate-x-1">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollAnimatedSection>
+              </ScrollAnimatedSection>
             </div>
           </div>
-          </div>
-        </div>
         </div>
       </section>
     </ScrollAnimatedSection>
@@ -1270,28 +1278,29 @@ const Home: React.FC = () => {
           style={{ background: 'rgba(23,141,181,0.45)' }}
         ></div>
       </div>
-      <section className="relative w-full min-h-screen flex flex-col justify-center bg-transparent overflow-hidden">
+      <section className="relative w-full min-h-screen flex flex-col justify-center bg-transparent overflow-hidden py-12 sm:py-16 md:py-20">
         <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-transparent z-10 pointer-events-none"></div>
         {/* Grid removed for cleaner hero */}
         {/* Removed bottom band to avoid visual seam between sections */}
-        <div className="absolute inset-0 pointer-events-none hidden md:block">
+        <div className="absolute inset-0 pointer-events-none hidden lg:block">
             <FloatingLogo icon={VscVscode} top="12%" left="8%" delay="0s" color="#38bdf8" rotate={-12} size={44} />
             <FloatingLogo icon={SiAnthropic} top="40%" left="4%" delay="-8s" color="#fb923c" rotate={8} size={40} />
             <FloatingLogo icon={SiGithub} top="72%" left="10%" delay="-4s" color="#ffffff" rotate={-5} size={44} />
             <FloatingLogo icon={SiNotion} top="18%" right="8%" delay="-10s" color="#ffffff" rotate={10} size={42} />
             <FloatingLogo icon={CursorLogo} top="62%" right="8%" delay="-2s" color="#ffffff" rotate={-15} size={40} />
         </div>
-        <div className="relative z-10 w-full site-container flex flex-col items-center -mt-4 md:-mt-8 gap-12">
+        <div className="relative z-10 w-full site-container flex flex-col items-center px-4 sm:px-6 md:px-8 -mt-4 md:-mt-8 gap-8 sm:gap-10 md:gap-12">
           <ScrollAnimatedSection threshold={0.2}>
             <h1 className="flex flex-col items-center justify-center font-display font-black tracking-tight leading-[1.1] w-full text-center">
-              <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-ink-1 drop-shadow-2xl pb-3 md:pb-5 whitespace-nowrap">
-                Memory-Centric Context <span className="text-ink-1">For</span>
+              <span className="text-2xl min-[375px]:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-ink-1 drop-shadow-2xl pb-2 sm:pb-3 md:pb-5 px-2 sm:px-0">
+                <span className="block sm:inline">Memory-Centric Context</span>{' '}
+                <span className="block sm:inline">For</span>
               </span>
-              <div className="flex flex-nowrap items-center justify-center mt-6 text-center">
-                <div className="relative inline-block text-center w-[2ch] sm:w-[3.5ch] md:w-[4ch] lg:w-[4.5ch] min-w-[140px] sm:min-w-[220px] md:min-w-[300px] lg:min-w-[380px]">
+              <div className="flex flex-nowrap items-center justify-center mt-4 sm:mt-6 text-center">
+                <div className="relative inline-block text-center w-[2ch] min-[375px]:w-[2.5ch] sm:w-[3.5ch] md:w-[4ch] lg:w-[4.5ch] min-w-[100px] min-[375px]:min-w-[120px] sm:min-w-[180px] md:min-w-[280px] lg:min-w-[360px]">
                   <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <span 
-                      className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-cyan-300 inline-block py-2 leading-tight transition-all duration-500 transform drop-shadow-[0_0_60px_rgba(34,211,238,0.7)] ${
+                      className={`text-2xl min-[375px]:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-cyan-300 inline-block py-1 sm:py-2 leading-tight transition-all duration-500 transform drop-shadow-[0_0_60px_rgba(34,211,238,0.7)] ${
                         isFading ? 'opacity-0 -translate-x-8 scale-95 blur-md' : 'opacity-100 translate-x-0 scale-100 blur-0'
                       }`}
                     >
@@ -1303,12 +1312,12 @@ const Home: React.FC = () => {
             </h1>
           </ScrollAnimatedSection>
           <ScrollAnimatedSection delay={0.1} threshold={0.2}>
-            <p className="text-lg md:text-xl text-ink-2 text-center max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-ink-2 text-center max-w-2xl leading-relaxed px-4 sm:px-6 md:px-0">
               Give agents persistent, multimodal memory across sessions — built for precision retrieval, real-time updates, and scale.
             </p>
           </ScrollAnimatedSection>
           <ScrollAnimatedSection delay={0.2} threshold={0.2}>
-            <div className="relative w-full max-w-lg">
+            <div className="relative w-full max-w-lg px-4 sm:px-0">
             <svg
               className="pointer-events-none absolute -inset-[6px] w-[calc(100%+12px)] h-[calc(100%+12px)] overflow-visible"
               viewBox="0 0 1000 120"
@@ -1366,33 +1375,35 @@ const Home: React.FC = () => {
               </rect>
             </svg>
             {/* 添加form标签包裹输入框和按钮，并添加noValidate属性 */}
-            <form onSubmit={handleJoinWaitlist} className="relative z-10" noValidate>
-              <div className="relative z-10 flex items-center gap-2 p-1 bg-white/5 border border-white/10 rounded-full backdrop-blur-md shadow-2xl focus-within:ring-2 focus-within:ring-primary/20 transition-all">
-                <div className="pl-5 text-ink-3">
-                  <Mail size={20} />
+            <form onSubmit={handleJoinWaitlist} className="relative z-10 w-full" noValidate>
+              <div className="relative z-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2 p-1 bg-white/5 border border-white/10 rounded-2xl sm:rounded-full backdrop-blur-md shadow-2xl focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                <div className="flex items-center gap-2 flex-1 px-3 sm:pl-5 sm:pr-2 py-1 sm:py-0">
+                  <div className="text-ink-3 flex-shrink-0">
+                    <Mail size={18} className="sm:w-5 sm:h-5" />
+                  </div>
+                  <input 
+                    type="email" 
+                    placeholder="Enter your work email" 
+                    value={workEmail}
+                    onChange={handleEmailChange}
+                    className="flex-1 bg-transparent border-none outline-none text-ink-1 placeholder:text-ink-3 font-medium text-sm sm:text-base px-1 sm:px-2 py-2 sm:py-3 min-w-0"
+                    onInvalid={(e) => {
+                      e.preventDefault(); // 阻止浏览器默认验证提示
+                      if (!workEmail.trim()) {
+                        setEmailError('Please enter your work email');
+                      }
+                    }}
+                  />
                 </div>
-                <input 
-                  type="email" 
-                  placeholder="Enter your work email" 
-                  value={workEmail}
-                  onChange={handleEmailChange}
-                  className="flex-1 bg-transparent border-none outline-none text-ink-1 placeholder:text-ink-3 font-medium text-base px-2 py-3"
-                  onInvalid={(e) => {
-                    e.preventDefault(); // 阻止浏览器默认验证提示
-                    if (!workEmail.trim()) {
-                      setEmailError('Please enter your work email');
-                    }
-                  }}
-                />
                 <button 
                   type="submit"
-                  className="px-6 py-3 bg-primary text-white font-bold rounded-full hover:bg-primaryHover transition-all active:scale-95 whitespace-nowrap mr-1"
+                  className="px-4 sm:px-6 py-2.5 sm:py-3 bg-primary text-white font-bold rounded-xl sm:rounded-full hover:bg-primaryHover transition-all active:scale-95 whitespace-nowrap text-sm sm:text-base sm:mr-1 w-full sm:w-auto"
                 >
                   Get Started
                 </button>
               </div>
               {emailError && (
-                <div className="text-red-400 text-sm mt-2 text-center font-medium">
+                <div className="text-red-400 text-xs sm:text-sm mt-2 text-center font-medium">
                   {emailError}
                 </div>
               )}
@@ -1400,7 +1411,7 @@ const Home: React.FC = () => {
             </div>
           </ScrollAnimatedSection>
           <ScrollAnimatedSection delay={0.3} threshold={0.2}>
-            <p className="text-ink-3 text-sm mt-4 text-center font-medium">
+            <p className="text-ink-3 text-xs sm:text-sm mt-4 text-center font-medium px-4 sm:px-0">
               Join 2,000+ developers building the future of AI.
             </p>
           </ScrollAnimatedSection>
