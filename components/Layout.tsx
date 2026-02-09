@@ -40,9 +40,9 @@ const Layout: React.FC<LayoutProps> = ({ children, toggleTheme, isDark }) => {
     <div className="min-h-screen flex flex-col font-body bg-background-dark text-ink-1">
       {/* 修复的导航栏 - 关键修改在这里！ */}
       <nav 
-        className={`sticky top-0 z-50 w-full bg-black backdrop-blur transition-all duration-300 ${
+        className={`sticky top-0 z-50 w-full bg-background backdrop-blur transition-all duration-300 ${
           scrolled 
-            ? 'border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.35)]' 
+            ? 'border-b border-border shadow-[0_10px_30px_rgba(0,0,0,0.18)]' 
             : 'border-b border-transparent'
         }`}
       >
@@ -89,10 +89,10 @@ const Layout: React.FC<LayoutProps> = ({ children, toggleTheme, isDark }) => {
               
               <button
                 onClick={toggleTheme}
-                className="p-2 text-ink-2 hover:text-primary transition-colors"
+                className="p-2 text-ink-1 hover:text-primary transition-colors"
                 aria-label="Toggle Theme"
               >
-                {isDark ? <Sun size={20} /> : <Moon size={20} />}
+                {isDark ? <Moon size={20} /> : <Sun size={20} />}
               </button>
               
               <a 

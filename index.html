@@ -26,6 +26,12 @@
         --border-color: rgba(15, 23, 42, 0.12);
         --text-main: #0f172a;
         --text-muted: #64748b;
+        --text-muted-2: #475569;
+
+        /* Marketing tokens (used by Tailwind `ink-*`) */
+        --ink-1: var(--text-main);
+        --ink-2: var(--text-muted);
+        --ink-3: var(--text-muted-2);
       }
 
       .dark {
@@ -38,6 +44,12 @@
         --border-color: rgba(255, 255, 255, 0.08);
         --text-main: #ffffff;
         --text-muted: #94a3b8;
+        --text-muted-2: #64748b;
+
+        /* Marketing tokens (used by Tailwind `ink-*`) */
+        --ink-1: var(--text-main);
+        --ink-2: var(--text-muted);
+        --ink-3: var(--text-muted-2);
       }
 
       body {
@@ -101,13 +113,13 @@
               // Marketing backgrounds
               background: {
                 DEFAULT: 'var(--bg-background)',
-                dark: "#000000",
-                darker: "#000000",
-                light: "#fafafa"
+                dark: 'var(--bg-background)',
+                darker: 'var(--bg-background)',
+                light: 'var(--bg-background)'
               },
               surface: {
-                dark: "#12161b",
-                light: "#ffffff"
+                dark: 'var(--bg-card)',
+                light: 'var(--bg-card)'
               },
 
               // Dashboard tokens (CSS variables)
@@ -121,11 +133,11 @@
 
               // Marketing text
               ink: {
-                1: "#ffffff",
-                2: "#94a3b8",
-                3: "#64748b"
+                1: 'var(--ink-1)',
+                2: 'var(--ink-2)',
+                3: 'var(--ink-3)'
               },
-              stroke: "rgba(255,255,255,0.08)"
+              stroke: 'var(--border-color)'
             },
             fontFamily: {
               display: ['Space Grotesk', 'sans-serif'],

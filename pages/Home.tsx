@@ -1265,7 +1265,7 @@ const Home: React.FC = () => {
     <div
       className="w-full relative"
       style={{
-        background: '#000000'
+        background: 'var(--bg-background)'
       }}
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
