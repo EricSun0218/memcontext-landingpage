@@ -1,11 +1,15 @@
 import React from 'react';
 
-const Memorirs: React.FC = () => {
+type MemoriesProps = {
+  initialView?: string;
+};
+
+const Memories: React.FC<MemoriesProps> = ({ initialView }) => {
   return (
     <div className="flex-1 flex items-center justify-center text-textMuted">
-        Memories Module Coming Soon
+      Memories Module Coming Soon{initialView ? ` (${initialView})` : ''}
     </div>
   );
 };
 
-export default Memorirs;
+export default Memories;

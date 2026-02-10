@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Github, Twitter, Moon, Sun } from 'lucide-react';
+import { supabase } from '../dashboard/lib/supabaseClient';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,6 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children, toggleTheme, isDark }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +37,15 @@ const Layout: React.FC<LayoutProps> = ({ children, toggleTheme, isDark }) => {
   };
 
   const logoUrl = "/logo/logo.png";
+
+  const handleGetStarted = useCallback(async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session?.user) {
+      navigate('/dashboard?tab=api-keys');
+      return;
+    }
+    navigate('/join');
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex flex-col font-body bg-background-dark text-ink-1">
@@ -80,12 +91,13 @@ const Layout: React.FC<LayoutProps> = ({ children, toggleTheme, isDark }) => {
 
             <div className="flex items-center gap-4">
               {/* Get Started 按钮 - 添加到这里！ */}
-              <Link
-                to="/join"
+              <button
+                type="button"
+                onClick={handleGetStarted}
                 className="btn-primary text-sm"
               >
                 Get Started
-              </Link>
+              </button>
               
               <button
                 onClick={toggleTheme}
@@ -129,13 +141,16 @@ const Layout: React.FC<LayoutProps> = ({ children, toggleTheme, isDark }) => {
                 </Link>
               ))}
               {/* 移动端 Get Started 按钮 */}
-              <Link
-                to="/join"
+              <button
+                type="button"
                 className="w-full py-3 flex items-center justify-center gap-2 bg-primary text-white font-bold rounded-lg hover:bg-primaryHover transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={async () => {
+                  setMobileMenuOpen(false);
+                  await handleGetStarted();
+                }}
               >
                 Get Started
-              </Link>
+              </button>
               <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
                 <a 
                   href="https://github.com/memcontext/memcontext"

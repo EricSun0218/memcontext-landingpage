@@ -49,6 +49,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom'; // 添加useNavigate导入
 import { SiNotion, SiYoutube, SiGithub, SiAnthropic, SiCoze, SiN8N } from 'react-icons/si';
 import { VscVscode } from 'react-icons/vsc';
+import { supabase } from '../dashboard/lib/supabaseClient';
 
 // 滚动动画Hook
 const useScrollAnimation = (threshold: number = 0.1) => {
@@ -167,7 +168,7 @@ const FloatingLogo: React.FC<{
   );
 };
 
-const CursorLogo: React.FC<{ size?: number }> = ({ size = 24 }) => (
+const CursorLogo: React.FC<{ size?: number; color?: string }> = ({ size = 24, color = '#FFFFFF' }) => (
   <svg
     width={size}
     height={size}
@@ -177,11 +178,11 @@ const CursorLogo: React.FC<{ size?: number }> = ({ size = 24 }) => (
     aria-hidden="true"
     focusable="false"
   >
-    <polygon points="32 4 58 18 6 18" fill="#FFFFFF" />
+    <polygon points="32 4 58 18 6 18" fill={color} />
     <polygon points="6 18 58 18 32 32" fill="#000000" />
-    <polygon points="6 18 32 32 32 60 6 46" fill="#FFFFFF" />
+    <polygon points="6 18 32 32 32 60 6 46" fill={color} />
     <polygon points="58 18 32 32 32 60" fill="#000000" />
-    <polygon points="58 18 32 60 58 46" fill="#FFFFFF" />
+    <polygon points="58 18 32 60 58 46" fill={color} />
     <polyline points="32 4 58 18 32 32 6 18 32 4" stroke="#1F2937" strokeWidth="1" opacity="0.35" />
     <polyline points="6 18 32 32 58 18" stroke="#1F2937" strokeWidth="1" opacity="0.45" />
     <polyline points="32 32 32 60" stroke="#1F2937" strokeWidth="1" opacity="0.35" />
@@ -1235,7 +1236,7 @@ const Home: React.FC = () => {
   };
 
   // 处理Get Started按钮点击
-  const handleJoinWaitlist = (e: React.FormEvent) => {
+  const handleJoinWaitlist = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // 自定义验证
@@ -1246,7 +1247,12 @@ const Home: React.FC = () => {
     
     // 清除错误并提交
     setEmailError('');
-    // 跳转到/join页面，并将email作为state传递
+    const { data } = await supabase.auth.getSession();
+    if (data.session?.user) {
+      navigate('/dashboard?tab=api-keys');
+      return;
+    }
+    // 未登录：跳转到/join页面，并将email作为state传递
     navigate('/join', { state: { email: workEmail } });
   };
 

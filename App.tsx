@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
@@ -30,12 +30,20 @@ const ScrollToTop = () => {
 };
 
 const DashboardApp: React.FC = () => {
+  const location = useLocation();
   const [currentPage, setCurrentPage] = useState<Page>(Page.LOGIN);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [theme, setTheme] = useState<Theme>('dark');
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [memoriesFilter, setMemoriesFilter] = useState<string>('Overview');
   const [authUser, setAuthUser] = useState<{ email?: string | null; name?: string | null } | null>(null);
+
+  const authedLandingPage = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab')?.toLowerCase();
+    if (tab === 'api-keys' || tab === 'apikeys' || tab === 'api_keys') return Page.API_KEYS;
+    return Page.DASHBOARD;
+  }, [location.search]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -64,7 +72,7 @@ const DashboardApp: React.FC = () => {
           email: user.email,
           name: user.user_metadata?.full_name || user.user_metadata?.name || null,
         });
-        setCurrentPage(Page.DASHBOARD);
+        setCurrentPage(authedLandingPage);
       } else {
         setAuthUser(null);
         setCurrentPage(Page.LOGIN);
@@ -80,7 +88,7 @@ const DashboardApp: React.FC = () => {
           email: user.email,
           name: user.user_metadata?.full_name || user.user_metadata?.name || null,
         });
-        setCurrentPage(Page.DASHBOARD);
+        setCurrentPage(authedLandingPage);
       } else {
         setAuthUser(null);
         setCurrentPage(Page.LOGIN);
@@ -98,7 +106,7 @@ const DashboardApp: React.FC = () => {
   const userInitial = userName ? userName[0].toUpperCase() : 'U';
 
   const handleLogin = () => {
-    setCurrentPage(Page.DASHBOARD);
+    setCurrentPage(authedLandingPage);
   };
 
   const handleLogout = () => {
@@ -218,21 +226,21 @@ const App: React.FC = () => {
         <Route 
           path="/join" 
           element={<Login onLogin={() => {
-            // 登录成功后跳转到仪表板
-            window.location.href = '/dashboard';
+            // 登录成功后默认跳转到 API Keys 页面
+            window.location.href = '/dashboard?tab=api-keys';
           }} />} 
         />
         <Route 
           path="/login" 
-          element={<Navigate to="/dashboard" replace />} 
+          element={<Navigate to="/join" replace />} 
         />
         <Route 
           path="/register" 
-          element={<Navigate to="/dashboard" replace />} 
+          element={<Navigate to="/join" replace />} 
         />
         <Route 
           path="/signup" 
-          element={<Navigate to="/dashboard" replace />} 
+          element={<Navigate to="/join" replace />} 
         />
       </Routes>
     </BrowserRouter>
